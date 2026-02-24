@@ -7,14 +7,14 @@ DROP TABLE IF EXISTS Dishes;
 DROP TABLE IF EXISTS Restaurants;
 
 CREATE TABLE Restaurants (
-    IdRestaurant INT PRIMARY KEY AUTO_INCREMENT,
+    IdRestaurant INT PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     Planet VARCHAR(100) NOT NULL,
     Opening_year INT
 );
 
 CREATE TABLE Employees (
-    IdEmployees INT PRIMARY KEY AUTO_INCREMENT,
+    IdEmployees INT PRIMARY KEY,
     Firstname VARCHAR(100) NOT NULL,
     Lastname VARCHAR(100) NOT NULL,
     Role VARCHAR(100),
@@ -24,7 +24,7 @@ CREATE TABLE Employees (
 );
 
 CREATE TABLE Dishes (
-    IdDishes INT PRIMARY KEY AUTO_INCREMENT,
+    IdDishes INT PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     Price DECIMAL(10,2),
     Category VARCHAR(100),
@@ -32,7 +32,7 @@ CREATE TABLE Dishes (
 );
 
 CREATE TABLE CustomerOrders (
-    IdOrders INT PRIMARY KEY AUTO_INCREMENT,
+    IdOrders INT PRIMARY KEY,
     IdRestaurant INT,
     Total_amount DECIMAL(10,2),
     Customer_name VARCHAR(100),
@@ -40,7 +40,7 @@ CREATE TABLE CustomerOrders (
 );
 
 CREATE TABLE OrderItems (
-    IdOrderItems INT PRIMARY KEY AUTO_INCREMENT,
+    IdOrderItems INT PRIMARY KEY,
     IdOrders INT,
     IdDishes INT,
     Quantity INT,
@@ -117,7 +117,8 @@ INSERT INTO Employees (Firstname, Lastname, Role, IdRestaurant, hire_date) VALUE
 ('Rho','Core','Serveur',20,'2485-01-17'),
 ('Sigma','Core','Serveur',21,'2485-01-18'),
 ('Tau','Core','Serveur',22,'2485-01-19'),
-('Upsilon','Core','Serveur',23,'2485-01-20');
+('Upsilon','Core','Serveur',23,'2485-01-20'),
+('Rémy','Bamas','Chef cuisinier',24,'2485-01-21');
 
 INSERT INTO Dishes (Name, Price, Category, is_vegan) VALUES
 ('Burger d Asteroide',12.50,'Burgers',FALSE),
