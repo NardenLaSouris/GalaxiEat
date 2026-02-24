@@ -221,3 +221,5 @@ CREATE TABLE DishIngredients (
 SELECT * FROM Dishes WHERE is_vegan = TRUE;
 SELECT * FROM Restaurants ORDER BY Opening_year ASC;
 SELECT * FROM CustomerOrders ORDER BY Total_amount DESC LIMIT 1;
+
+//csedrtfgyhuij
