@@ -25,7 +25,8 @@ Les clés étrangères relient les employés et les commandes à leur restaurant
 - Tris et filtres (`ORDER BY`, `WHERE`, `LIKE`, `IS NULL`, `LIMIT`)
 - Sous-requête : plats plus chers que le prix moyen
 - Jointures : employés avec le nom de leur restaurant, détail des commandes
-- Agrégats : prix moyen par catégorie (`GROUP BY`), chiffre d'affaires total (`SUM`)
+- Agrégats : prix moyen par catégorie (`GROUP BY`), chiffre d'affaires total (`SUM`), nombre d'employés par restaurant
+- Relation plusieurs à plusieurs : composition de chaque plat (`GROUP_CONCAT`), ingrédients les plus utilisés
 - Mises à jour et suppressions (`UPDATE`, `DELETE`)
 
 ## Utilisation
@@ -41,3 +42,12 @@ SELECT Name, Planet FROM Restaurants ORDER BY Opening_year;
 ```
 
 La base s'ouvre aussi avec DB Browser for SQLite ou l'extension SQLite de VS Code.
+
+Pour reconstruire la base à partir du script :
+
+```bash
+rm GalaxiEat.sqlite
+sqlite3 GalaxiEat.sqlite < GalaxiEat.sql
+```
+
+Le script est écrit pour SQLite : les identifiants sont des `INTEGER PRIMARY KEY`, numérotés automatiquement.

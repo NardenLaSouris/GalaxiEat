@@ -7,14 +7,14 @@ DROP TABLE IF EXISTS Dishes;
 DROP TABLE IF EXISTS Restaurants;
 
 CREATE TABLE Restaurants (
-    IdRestaurant INT PRIMARY KEY,
+    IdRestaurant INTEGER PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     Planet VARCHAR(100) NOT NULL,
     Opening_year INT
 );
 
 CREATE TABLE Employees (
-    IdEmployees INT PRIMARY KEY,
+    IdEmployees INTEGER PRIMARY KEY,
     Firstname VARCHAR(100) NOT NULL,
     Lastname VARCHAR(100) NOT NULL,
     Role VARCHAR(100),
@@ -24,7 +24,7 @@ CREATE TABLE Employees (
 );
 
 CREATE TABLE Dishes (
-    IdDishes INT PRIMARY KEY,
+    IdDishes INTEGER PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     Price DECIMAL(10,2),
     Category VARCHAR(100),
@@ -32,7 +32,7 @@ CREATE TABLE Dishes (
 );
 
 CREATE TABLE CustomerOrders (
-    IdOrders INT PRIMARY KEY,
+    IdOrders INTEGER PRIMARY KEY,
     IdRestaurant INT,
     Total_amount DECIMAL(10,2),
     Customer_name VARCHAR(100),
@@ -40,7 +40,7 @@ CREATE TABLE CustomerOrders (
 );
 
 CREATE TABLE OrderItems (
-    IdOrderItems INT PRIMARY KEY,
+    IdOrderItems INTEGER PRIMARY KEY,
     IdOrders INT,
     IdDishes INT,
     Quantity INT,
@@ -118,7 +118,7 @@ INSERT INTO Employees (Firstname, Lastname, Role, IdRestaurant, hire_date) VALUE
 ('Sigma','Core','Serveur',21,'2485-01-18'),
 ('Tau','Core','Serveur',22,'2485-01-19'),
 ('Upsilon','Core','Serveur',23,'2485-01-20'),
-('Rémy','Bamas','Chef cuisinier',24,'2485-01-21');
+('Rémy','Bamas','Chef cuisinier',23,'2485-01-21');
 
 INSERT INTO Dishes (Name, Price, Category, is_vegan) VALUES
 ('Burger d Asteroide',12.50,'Burgers',FALSE),
@@ -191,6 +191,8 @@ SET Price =
     END;
 
 DELETE FROM Dishes WHERE Price IS NULL;
+-- Supprimer d'abord les lignes des commandes concernees, sinon elles pointeraient vers une commande disparue
+DELETE FROM OrderItems WHERE IdOrders IN (SELECT IdOrders FROM CustomerOrders WHERE Total_amount < 5);
 DELETE FROM CustomerOrders WHERE Total_amount < 5;
 
 SELECT Category, AVG(Price) AS Prix_moyen
@@ -206,7 +208,7 @@ SELECT * FROM Employees
 WHERE Lastname LIKE '%a%' OR Firstname LIKE '%a%';
 
 CREATE TABLE Ingredients (
-    IdIngredient INT PRIMARY KEY AUTO_INCREMENT,
+    IdIngredient INTEGER PRIMARY KEY,
     Name VARCHAR(100) NOT NULL
 );
 
@@ -217,6 +219,44 @@ CREATE TABLE DishIngredients (
     FOREIGN KEY (IdDishes) REFERENCES Dishes(IdDishes),
     FOREIGN KEY (IdIngredient) REFERENCES Ingredients(IdIngredient)
 );
+
+INSERT INTO Ingredients (Name) VALUES
+('Pain'),
+('Steak de poussiere d etoile'),
+('Fromage lunaire'),
+('Tomate martienne'),
+('Salade de Venus'),
+('Baies de nebuleuse'),
+('Lait d avoine'),
+('Tortilla'),
+('Haricots quantiques'),
+('Pate a pizza'),
+('Chocolat noir'),
+('Legumes du potager orbital');
+
+INSERT INTO DishIngredients (IdDishes, IdIngredient) VALUES
+(1,1),(1,2),(1,3),(1,4),
+(2,10),(2,3),(2,4),
+(3,6),(3,7),
+(4,5),(4,4),(4,12),
+(5,8),(5,9),(5,4),
+(6,12),(6,4),
+(7,8),(7,5),(7,12),
+(8,11),(8,6);
+
+-- Composition de chaque plat
+SELECT d.Name AS Plat, GROUP_CONCAT(i.Name, ', ') AS Ingredients
+FROM Dishes d
+JOIN DishIngredients di ON d.IdDishes = di.IdDishes
+JOIN Ingredients i ON di.IdIngredient = i.IdIngredient
+GROUP BY d.IdDishes;
+
+-- Ingredients les plus utilises
+SELECT i.Name, COUNT(*) AS Nombre_de_plats
+FROM Ingredients i
+JOIN DishIngredients di ON i.IdIngredient = di.IdIngredient
+GROUP BY i.IdIngredient
+ORDER BY Nombre_de_plats DESC;
 
 SELECT * FROM Dishes WHERE is_vegan = TRUE;
 SELECT * FROM Restaurants ORDER BY Opening_year ASC;
